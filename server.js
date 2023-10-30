@@ -30,6 +30,50 @@ app.get("/", (req, res) => {
 
 app.use("/api/users", userRoutes); // Mount user routes
 
+// This API is for storing information about the person that used the CONTACT form.
+// app.get("/contact",cors(),(req,res)=>{
+
+// })
+app.post("/contact", async (req, res) => {
+  //const formData.contactName.trim() = req.body;
+  const {formData} = req.body
+  const contact_name = formData.contactName.trim()
+  //const contact_name = req.body.contact_name;
+  //const contact_id = req.body.contact_id;
+  const contact_phone = formData.contactPhone.trim()
+  const contact_email = formData.contactEmail.trim()
+  const contact_topic = formData.contactTopic.trim()
+  const contact_message= formData.contactMessage.trim()
+  //const contact_time= req.body.contact_time;
+  const contact_reply= 0;
+  //const date = current_date();
+  const table_name = "contact_us";
+
+  // Execute query
+  sql = `INSERT into ${table_name} (contact_name, contact_phone, contact_email, contact_topic, contact_message, contact_reply)
+  VALUES ("${contact_name}", "${contact_phone}", ${
+    contact_email ? '"' + contact_email + '"' : "NULL"
+  }, "${contact_topic}", ${
+    contact_message ? '"' + contact_message + '"' : "NULL"
+  }, ${
+    contact_reply ? '"' + contact_reply + '"' : "NULL"})
+  ON DUPLICATE KEY 
+  UPDATE contact_name = "${contact_name}", 
+  contact_phone = "${contact_phone}",
+  contact_email = ${contact_email ? '"' + contact_email + '"' : "NULL"},
+  contact_topic = ${contact_topic ? '"' + contact_topic + '"' : "NULL"},
+  contact_message = ${contact_message ? '"' + contact_message + '"' : "NULL"},
+  contact_reply = ${contact_reply ? '"' + contact_reply + '"' : "NULL"};`;
+  try {
+    result = await mysql.query(sql);
+  } catch (error) {
+    console.log(error);
+    res.send({ error: "Something wrong in MySQL." });
+    return;
+  }
+  res.send({ success: "Form Submitted Successfully." });
+});
+
 app.post("/searchpatient", (req, res) => {
   
   const phoneNumber = req.body.phoneNumber; // patient phone number, e.g. "6131230000"

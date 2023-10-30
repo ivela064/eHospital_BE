@@ -1,4 +1,3 @@
-
 const dbConfig = require("../../app/config/db.config");
 
 const db = require("../../db");
@@ -33,6 +32,4 @@ exports.getAllPatients = async (req, res) => {
     res.status(500).json({ error: "Internal server error" });
   }
 };
-
-
 
