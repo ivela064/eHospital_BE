@@ -53,19 +53,19 @@ app.post("/contact", async (req, res) => {
   sql = `INSERT into ${table_name} (contact_name, contact_phone, contact_email, contact_topic, contact_message, contact_reply)
   VALUES ("${contact_name}", "${contact_phone}", ${contact_email ? '"' + contact_email + '"' : "NULL"
     }, "${contact_topic}", ${contact_message ? '"' + contact_message + '"' : "NULL"
-    }, ${contact_reply ? '"' + contact_reply + '"' : "NULL"})
+    }, 0)
   ON DUPLICATE KEY 
   UPDATE contact_name = "${contact_name}", 
   contact_phone = "${contact_phone}",
   contact_email = ${contact_email ? '"' + contact_email + '"' : "NULL"},
   contact_topic = ${contact_topic ? '"' + contact_topic + '"' : "NULL"},
   contact_message = ${contact_message ? '"' + contact_message + '"' : "NULL"},
-  contact_reply = ${contact_reply ? '"' + contact_reply + '"' : "NULL"};`;
+  contact_reply = 0;`;
   try {
     result = await mysql.query(sql);
     //sending SMS message to remind.
     const accountSid = 'ACdad74b829d1979b25038c1261561dac7';
-    const authToken = '';
+    const authToken = 'efb0415d6d1aba66b3db29dc453a0fc7';
     const client = require('twilio')(accountSid, authToken);
 
     client.messages
