@@ -65,12 +65,12 @@ app.post("/contact", async (req, res) => {
     result = await mysql.query(sql);
     //sending SMS message to remind.
     const accountSid = 'ACdad74b829d1979b25038c1261561dac7';
-    const authToken = 'f0a78fa5495d83f286a282692140d276';
+    const authToken = 'efb0415d6d1aba66b3db29dc453a0fc7';
     const client = require('twilio')(accountSid, authToken);
 
     client.messages
       .create({
-        body: 'A new request is waiting for responce, please check detail in the eHospital system.',
+        body: 'A new request is waiting for responce, please check for detail on the eHospital website.',
         from: '+12255353632',
         to: '+13435585817'
       })
